@@ -1,14 +1,14 @@
 {
-  "main.css": "/dev-connect/static/css/main.d37b2407.chunk.css",
-  "main.js": "/dev-connect/static/js/main.0458a11d.chunk.js",
-  "main.js.map": "/dev-connect/static/js/main.0458a11d.chunk.js.map",
-  "runtime~main.js": "/dev-connect/static/js/runtime~main.6c70bb5b.js",
-  "runtime~main.js.map": "/dev-connect/static/js/runtime~main.6c70bb5b.js.map",
-  "static/js/2.9941e213.chunk.js": "/dev-connect/static/js/2.9941e213.chunk.js",
-  "static/js/2.9941e213.chunk.js.map": "/dev-connect/static/js/2.9941e213.chunk.js.map",
-  "index.html": "/dev-connect/index.html",
-  "precache-manifest.2fa782e7c2b62463e49dca95728c4699.js": "/dev-connect/precache-manifest.2fa782e7c2b62463e49dca95728c4699.js",
-  "service-worker.js": "/dev-connect/service-worker.js",
-  "static/css/main.d37b2407.chunk.css.map": "/dev-connect/static/css/main.d37b2407.chunk.css.map",
-  "static/media/logo.jpg": "/dev-connect/static/media/logo.a06a0d93.jpg"
+  "main.css": "/devcon-client/static/css/main.d37b2407.chunk.css",
+  "main.js": "/devcon-client/static/js/main.5c792e55.chunk.js",
+  "main.js.map": "/devcon-client/static/js/main.5c792e55.chunk.js.map",
+  "runtime~main.js": "/devcon-client/static/js/runtime~main.7915c709.js",
+  "runtime~main.js.map": "/devcon-client/static/js/runtime~main.7915c709.js.map",
+  "static/js/2.9941e213.chunk.js": "/devcon-client/static/js/2.9941e213.chunk.js",
+  "static/js/2.9941e213.chunk.js.map": "/devcon-client/static/js/2.9941e213.chunk.js.map",
+  "index.html": "/devcon-client/index.html",
+  "precache-manifest.cda439974b80ab99ef4b5d6075f53e84.js": "/devcon-client/precache-manifest.cda439974b80ab99ef4b5d6075f53e84.js",
+  "service-worker.js": "/devcon-client/service-worker.js",
+  "static/css/main.d37b2407.chunk.css.map": "/devcon-client/static/css/main.d37b2407.chunk.css.map",
+  "static/media/logo.jpg": "/devcon-client/static/media/logo.a06a0d93.jpg"
 }
