@@ -2,14 +2,21 @@
   "name": "dev-connect-client",
   "version": "0.1.0",
   "private": true,
+  "homepage":"https://landrykapela.github.io/devcon-client",
   "dependencies": {
+    "gh-pages": "^2.0.1",
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
-    "react-scripts": "2.1.8"
+    "react-instantsearch-dom": "^5.4.0",
+    "react-router-dom": "^5.0.0",
+    "react-scripts": "2.1.8",
+    "typescript": "^3.4.3"
   },
   "scripts": {
     "start": "react-scripts start",
     "build": "react-scripts build",
+    "predeploy":"yarn build",
+    "deploy":"gh-pages -d build",
     "test": "react-scripts test",
     "eject": "react-scripts eject"
   },

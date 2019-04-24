@@ -1,25 +1,42 @@
 import React, { Component } from 'react';
-import logo from './logo.svg';
 import './App.css';
+import Router from './Router.js';
 
 class App extends Component {
+  constructor(props){
+    super(props);
+    this.getLogin = this.getLogin.bind(this);
+    this.state = {isLoggedIn:false};
+  }
+
+componentDidMount(){
+
+}
+getLogin(){
+  this.route = window.location.href.split('/');
+  console.log("current route: "+this.route[this.route.length-1]);
+  if(this.route[this.route.length-1] === "panel") {
+    this.setState((prevState)=>
+    {
+      return {isLoggedIn:!prevState.isLoggedIn};
+    });
+  }
+  else{
+    this.setState((prevState)=>
+    {
+      return {isLoggedIn:prevState.isLoggedIn};
+    });
+  }
+
+  console.log("login: "+this.getLogin());
+
+}
   render() {
+
     return (
       <div className="App">
-        <header className="App-header">
-          <img src={logo} className="App-logo" alt="logo" />
-          <p>
-            Edit <code>src/App.js</code> and save to reload.
-          </p>
-          <a
-            className="App-link"
-            href="https://reactjs.org"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Learn React
-          </a>
-        </header>
+        <Router login={this.state.isLoggedIn}/>
+
       </div>
     );
   }

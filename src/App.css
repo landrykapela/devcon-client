@@ -1,15 +1,30 @@
 .App {
   text-align: center;
+  font-family: 'Roboto', sans-serif;
 }
-
+h1,h2,h3{
+  font-family: 'Raleway', sans-serif;
+}
+.card{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
+.card .card-title{
+  background-color: #61dafb;
+  font-family: 'Raleway', sans-serif;
+  text-transform: uppercase;
+  padding-left: 2em;
+  padding-right: 2em;
+}
+.shadow{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+}
 .App-logo {
-  animation: App-logo-spin infinite 20s linear;
   height: 40vmin;
   pointer-events: none;
 }
 
 .App-header {
-  background-color: #282c34;
+  background-color: #000000;
   min-height: 100vh;
   display: flex;
   flex-direction: column;
@@ -17,17 +32,459 @@
   justify-content: center;
   font-size: calc(10px + 2vmin);
   color: white;
+  padding: 1em;
 }
 
 .App-link {
   color: #61dafb;
+  text-decoration: none;
+  padding:.5em;
+}
+.App-link:hover{
+  color:white;
+}
+.slideButton span i{
+  cursor: pointer;
+}
+.profile{
+  display: flex;
+  width:100vw;
+  flex-direction: column;
+  margin-bottom:5vh;
+}
+.profile a:link, .profile a:visited{
+  color: black;
+  text-decoration: underline;
+}
+.profile a:hover{
+  color: black;
+  font-weight: bold;
+  text-decoration: underline;
+}
+.professional-details{
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: flex-start;
+  padding: 2em;
+  width:90vw;
+  margin:5vh auto;
+  padding:5vw;
+  flex-wrap: wrap;
+  position: relative;
+  top:0;
+}
+.profileImage{
+  max-width: 240px;
+}
+.imageUploadIcon{
+  background-color: #455aabcc;
+  display: block;
+  height: 2em;
+  margin-top:-2.4em;
+  color:white;
+  vertical-align: middle;
+  padding:.2em;
+  font-size: 1.5em;
+}
+.personal-details{
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2em;
+  max-height: 800px;
+  background: #61dafb;
+  margin:0 auto;
+  padding:5vw;
+  height:auto;
+  width:90vw;
+  flex-wrap: wrap;
+}
+.personal-details img.profilePic{
+  border-radius: 50%;
+  width:200px;
+  height:200px;
+}
+.info{
+  display: flex;
+  flex-direction: column;
+  font-size: 1em;
+  font-family: 'Raleway', sans-serif;
+}
+.info p i{
+  vertical-align: middle;
+}
+.info i{
+  vertical-align: middle;
+  font-size: 1.2em;
+  cursor: pointer;
+}
+.pro-info{
+  margin:3em auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+
+}
+.card-list{
+  text-align: left;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-left: 3em;
+  padding-right:3em;
+}
+.card-list div{
+  padding: .5em;
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: center;
+  border: 0px solid red;
+  width:100%;
+}
+.card-list div img.bullet{
+  width:24px;
+  height:24px;
+  margin-left: -2em;
+  margin-right: 1em;
+}
+.card-list div span.actions{
+  margin-left: auto;
+  font-style: italic;
+  border: 0px solid teal;
+  font-size: .9em;
+}
+.card-list div span.level{
+  margin-left: auto;
+  font-style: italic;
+  border: 0px solid teal;
+  font-size: .9em;
+}
+.card-list div a:link,.card-list li a:visited,.card-list li a:hover{
+  text-decoration:none;
+  color:#455aab;
+}
+.card-list div span i{
+  vertical-align: middle;
+  font-size: 1.2em;
+  color:#455aab;
+  cursor: pointer;
+}
+/* Start pool and user cards */
+.pool{
+  display: flex;
+  width:90vw;
+  padding: 5vw;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+  margin-bottom:5vh;
+}
+.no-info{
+  color: #61dafb;
+  font-size: 1.5em;
+  font-family: 'Raleway', sans-serif;
+}
+.user-card{
+  box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
+  width: 240px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin:2em;
+}
+.cardHead{
+  display: block;
+  width:100%;
+  height: 160px;
+  background-size: cover;
+}
+.cardTitle{
+  background-color: black;
+  color: #afe1ea;
+  font-family: 'Raleway', sans-serif;
+  width:100%;
+}
+a.cardTitle{
+  text-decoration: none;
+}
+/*End of pool and user cards styles */
+.border-primary{
+  border: 1px solid #afe1ea;
+}
+.border-primary--2t{
+  border: 2px solid #afe1ea;
+}
+.border-white{
+  border: 1px solid #ffffff;
+}
+.border-white--2t{
+  border: 2px solid #ffffff;
+}
+.form-container{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width: 97vw;
+  margin: 1.5vw auto;
+  padding:.5em;
+ text-align: center;
+}
+.form-container form{
+  width:90%;
+  overflow: auto;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  max-width:800px;
+  padding-top:5vh;
+  padding-bottom:5vh;
+}
+.form-search{
+  margin: 3em;
+  display:flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+}
+.form-search input[type=text]{
+  border: 2px solid #afe1ea;
+  line-height: 2em;
+  padding-left: 1em;
+  padding-top: .5em;
+  padding-right: 1em;
+  padding-bottom: .5em;
+  width:300px;
+}
+.form-search button{
+  background-color: #afe1ea;
+  font-size: 1em;
+  cursor: pointer;
+}
+.form-search button i{
+  vertical-align: middle;
+}
+.form-control{
+border: 0px solid green;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  max-width: 80%;
+  margin-top:1em;
+  margin-left: 0em;
+  margin-bottom: 0em;
+  margin-right: 0em;
+  padding: 2em 2em 2em 2em;
+  width:600px;
+}
+.form-control input[type=email], .form-control input[type=text], .form-control input[type=password]{
+  width:95%;
+  border: 1px solid #afe1ea;
+  line-height: 2em;
+  padding-left: 1em;
+  padding-top: .5em;
+  padding-right: 1em;
+  padding-bottom: .5em;
+  max-width:580px;
+}
+.form-control input[type=submit]{
+  background-color: #000000;
+  color: #afe1ea;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top:.5em;
+  padding-bottom: .5em;
+  cursor: pointer;
+  font-size: 1.2em;
+  text-transform: uppercase;
+}
+#editFields{
+  flex-grow: 2;
+  max-width: 500px;
+}
+.editFormControl{
+  display: flex;
+  flex-direction: row;
+  justify-content: flex-start;
+  align-items: flex-start;
+  padding-top:.5em;
+}
+.editFormControl input[type=text], .editFormControl input[type=email]{
+  width:90%;
+  line-height: 1.5em;
+  padding-left: 1em;
+  padding-top: .5em;
+  padding-right: 1em;
+  padding-bottom: .5em;
+}
+.fieldButton{
+  color: #afe1ea;
+  background-color: black;
+  height:2em;
+  font-size: 1em;
+}
+.home-buttons{
+  display:flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+  justify-content: center;
+  align-items: center;
+}
+.button-large{
+  height: 4em;
+  padding-left: 1em;
+  padding-right: 1em;
+  padding-top:.5em;
+  padding-bottom: .5em;
+  font-size: .6em;
+  border-radius: 5%;
+  margin: 3em 3em 3em 3em;
+  cursor: pointer;
+}
+.primary{
+  background-color: #afe1ea;
+  color: #000000;
+}
+.clear{
+border:1px solid #afe1ea;
+color: #ffffff;
+background-color: black;
+}
+.nav-menu{
+  background-color: black;
+  list-style: none;
+  display:flex;
+  flex-direction: row;
+  justify-content: flex-end;
+  align-items: center;
+  margin: 0 auto;
+  padding-right:5vw;
+  height:100px;
+}
+.nav-menu-item{
+    padding: 1em 1em 1em 1em;
 }
 
-@keyframes App-logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+.nav-menu-item a:link,a:visited{
+  text-decoration: none;
+  text-transform: none;
+  color: #afe1ea;
+  padding: .5em 1em .5em 1em;
+}
+.nav-menu-item a.active{
+  font-weight: bold;
+  border-bottom: 1px solid #afe1ea;
+}
+.visible{
+  display: block;
+}
+.hidden{
+  display: none;
+}
+.left{
+  text-align: left;
+  justify-content: flex-start;
+}
+.center{
+  text-align: center;
+  justify-content: center;
+}
+.right{
+  text-align: right;
+  justify-content: flex-end;
+}
+#dialog-container{
+  width:80vw;
+  height:80vh;
+  position:fixed;
+  top:10vh;
+  left:10vw;
+  right:10vw;
+  bottom:10vh;
+  text-align: center;
+  vertical-align: middle;
+  background-color: #000000cc;
+  z-index: 1000;
+  display: flex;
+  justify-content: center;
+}
+.dialog{
+z-index: 1000;
+  top:30vh;
+  left:10vw;
+  right:10vw;
+  position:fixed;
+  align-self: center;
+  margin: 50px auto;
+  min-width: 300px;
+  width:40vw;
+  max-width: 70vw;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  color:white;
+  border: 1px solid white;
+  background-color: black;
+}
+.dialog .title{
+  width:100%;
+  text-align: center;
+  color:black;
+  background-color: #afe1ea;
+}
+.dialog_buttons{
+  margin:2em;
+  display: flex;
+  flex-direction: row;
+}
+.dialog_buttons button{
+  color: #afe1ea;
+  border: 1px solid #afe1ea;
+  height:2em;
+  font-size: 1em;
+  margin-left: 2em;
+  margin-right: 2em;
+  min-width:5vw;
+  background-color: black;
+  text-transform: uppercase;
+  cursor: pointer;
+}
+.dashboard{
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 2em;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
 }
