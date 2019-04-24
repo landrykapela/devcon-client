@@ -2,7 +2,7 @@
   "name": "dev-connect-client",
   "version": "0.1.0",
   "private": true,
-  "homepage":"https://landrykapela.github.io/devcon-client",
+  "homepage":"https://landrykapela.github.io/devcon-client/",
   "dependencies": {
     "gh-pages": "^2.0.1",
     "react": "^16.8.6",
