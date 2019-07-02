@@ -9,7 +9,7 @@ class Main extends React.Component {
     console.log("loaded");
     window.setTimeout(() => {
       this.setState(ps => ({ timeToFade: !ps.timeToFade }));
-    }, 3000);
+    }, 1000);
 
     // console.log(hl.textContent);
   }
@@ -24,7 +24,7 @@ class Main extends React.Component {
               (this.state.timeToFade ? "fadeIn" : "fadeOut")
             }
           >
-            Looking for impressive developer profiles?
+            Looking for developers with impressive profiles?
           </h1>
           <span className="banner-line mdl-color--accent" />
           <h3>Take control of what you need</h3>

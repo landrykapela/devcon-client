@@ -254,20 +254,21 @@ a.cardTitle {
 .form-container {
   display: flex;
   flex-direction: row;
-  justify-content: center;
+  justify-content: space-between;
   align-items: center;
-  max-width: 97vw;
-  margin: 1.5vw auto;
-  padding: 0.5em;
+  max-width: 80vw;
+  margin: 0.5em auto;
+  padding: 0;
+  max-height: 100vh;
   text-align: center;
 }
 .form-container form {
+  margin: 0 auto;
   overflow: auto;
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: flex-start;
-  max-width: 800px;
   padding-top: 5vh;
   padding-bottom: 5vh;
 }
@@ -285,7 +286,6 @@ a.cardTitle {
   padding-top: 0.5em;
   padding-right: 1em;
   padding-bottom: 0.5em;
-  width: 300px;
 }
 .form-search button {
   background-color: #afe1ea;
@@ -406,11 +406,19 @@ a.cardTitle {
   width: 20%;
   border-radius: 15px;
 }
+.banner-1 {
+  width: 50%;
+  margin: 20px auto;
+}
 .banner,
 .image-container {
   justify-content: start;
-  max-width: 40vw;
+  width: 50%;
   text-align: left;
+  max-width: 800px;
+}
+.image-container img {
+  width: 100%;
 }
 .no-opacity {
   opacity: 0;

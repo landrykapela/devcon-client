@@ -1,6 +1,6 @@
 import React from "react";
 import queryString from "query-string";
-import ladySearch from "./assets/search_lady.png";
+import resume from "./assets/resume.png";
 import { Spinner, FormLabel, FormGroup, FormControl } from "react-bootstrap";
 
 class FormLogin extends React.Component {
@@ -32,12 +32,17 @@ class FormLogin extends React.Component {
 
   render() {
     return (
-      <div className="form-container" id="form-container">
+      <div className="mdl-shadow--2dp form-container" id="form-container">
         <form action="#" className="mdl-card mdl-shadow--0dp">
-          <div className="mdl-card__title">
-            <h1 className="mdl-card__title-text  mdl-typography--text-color-primary">
-              All Developer profiles in a single search
-            </h1>
+          <div className="button-container">
+            <div class="g-signin2" data-onsuccess="onSignIn">
+              Signin with Google
+            </div>
+            <div>
+              <a id="github-button" class="btn btn-block btn-social btn-github">
+                <i class="fa fa-github" /> Sign in with Github
+              </a>
+            </div>
           </div>
 
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
@@ -83,8 +88,8 @@ class FormLogin extends React.Component {
             </a>
           </div>
         </form>
-        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-          <img src={ladySearch} alt="search professional profiles" />
+        <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label mdl-color--primary image-container">
+          <img src={resume} alt="search professional profiles" />
         </div>
       </div>
     );
