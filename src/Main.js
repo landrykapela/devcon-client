@@ -1,36 +1,44 @@
-import React from 'react';
+import React from "react";
 
-import logo from './assets/logo.jpg';
+import logo from "./assets/logo.jpg";
+import lady_search from "./assets/search_lady.png";
 
-class Main extends React.Component{
+class Main extends React.Component {
+  state = { timeToFade: false };
+  componentDidMount() {
+    console.log("loaded");
+    window.setTimeout(() => {
+      this.setState(ps => ({ timeToFade: !ps.timeToFade }));
+    }, 3000);
 
-  handleClick(e){
-    e.preventDefault();
-    let id = e.target.id;
-    if(id === 'btn-dev'){
-      window.location.href="/signup";
-    }
-    else{
-      window.location.href="/panel";
-    }
+    // console.log(hl.textContent);
   }
-  render(){
-    return(
-      <header className="App-header">
-        <img src={logo} className="App-logo" alt="logo" />
-        <p>
-          Join the largest developer directory or find the best developer profiles
-        </p>
-        <div className="home-buttons">
-
-          <button id="btn-dev" className="button-large primary" onClick={this.handleClick}>I'm a Developer</button>
-
-          <button id="btn-need-dev" className="button-large clear" onClick={this.handleClick}>Need a Developer</button>
-
+  render() {
+    return (
+      <div className="form-container" id="form-container">
+        <div className="banner">
+          <h1
+            id="headline"
+            className={
+              "mdl-color-text--primary " +
+              (this.state.timeToFade ? "fadeIn" : "fadeOut")
+            }
+          >
+            Looking for impressive developer profiles?
+          </h1>
+          <span className="banner-line mdl-color--accent" />
+          <h3>Take control of what you need</h3>
+          <a href="signup">
+            <button class="mdl-button mdl-js-button mdl-button--raised mdl-button--primary">
+              try now! <i className="material-icons">arrow_forward</i>
+            </button>
+          </a>
         </div>
-
-        <a className="App-link" href="/login">Login here</a>
-      </header>
+        <div className="image-container">
+          <img src={lady_search} alt="search professional profiles" />
+        </div>
+      </div>
     );
   }
-} export default Main;
+}
+export default Main;
