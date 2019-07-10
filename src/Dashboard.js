@@ -1,22 +1,73 @@
 import React from "react";
 import CustomList from "./CustomList2.js";
-import AlertDialog from "./AlertDialog.js";
 import { Spinner } from "react-bootstrap";
+import ProgressBar from "react-bootstrap/ProgressBar";
+import { Redirect, Route } from "react-router-dom";
+import ProForm from "./ProForm";
+import LinkDialog from "./LinkDialog.js";
 
 class Dashboard extends React.Component {
   constructor(props) {
     super(props);
-
-    this.handleClick = this.handleClick.bind(this);
+    console.log("props: ", props);
+    this.handleImageClick = this.handleImageClick.bind(this);
     this.showDialog = this.showDialog.bind(this);
     this.hideDialog = this.hideDialog.bind(this);
     this.delete = this.delete.bind(this);
-    this.state = {
-      data: [],
+    this.handleAuthentication = this.handleAuthentication.bind(this);
+    this.updateProgress = this.updateProgress.bind(this);
+    this.handleButtonClick = this.handleButtonClick.bind(this);
+    this.showForm = this.showForm.bind(this);
+    this.handleSubmitPro = this.handleSubmitPro.bind(this);
+    this.handleLinkButton = this.handleLinkButton.bind(this);
+    this.changeView = this.changeView.bind(this);
+    this.updateSource = this.updateSource.bind(this);
+    this.base64Encode = this.base64Encode.bind(this);
+    this.source = [];
+    this.state = props.location.state || {
+      authenticated: false,
+      uid: null,
+      type: null,
+      data: this.source,
       dataChanged: false,
       dialog: null,
-      loadingData: false
+      loadingData: false,
+      error: "",
+      isError: false,
+      progress: null,
+      proform: null,
+      buttonClicked: false
     };
+    console.log("props: ", this.state);
+  }
+  handleAuthentication() {
+    this.props.onAuthentication(this.state.authenticated);
+  }
+  updateSource(source) {
+    this.setState({ data: source, dataChanged: false });
+  }
+  handleUpdate(data) {
+    if (data.target === "links") this.setState({ hasDialog: false });
+    console.log("Handleupdate: ", data.target);
+    if (data.target && data.value.length > 0) {
+      fetch(
+        "http://localhost:5000/api/v1/developers/" + this.state.uid + "/edit",
+        {
+          method: "put",
+          headers: { "content-type": "application/json" },
+          body: JSON.stringify(data)
+        }
+      )
+        .then(res => res.json())
+        .then(success => {
+          console.log("handleUpdate: ", success);
+
+          this.setState({ dataChanged: true, proform: null });
+        })
+        .catch(e => {
+          console.log("handleUpdate", e);
+        });
+    }
   }
   delete() {
     if (this.state.dialog !== null) {
@@ -58,22 +109,124 @@ class Dashboard extends React.Component {
       console.log("Successfully unmounted dialog");
     });
   }
-
-  componentDidMount() {
-    this.setState(ps => ({ loadingData: true }));
-    let parts = window.location.href.split("/");
-    let id = parts[parts.length - 1];
-    console.log("id: " + id);
-    fetch("http://localhost:5000/api/dev/" + id)
-      .then(res => res.json())
-      .then(result => {
-        this.setState(prev => {
-          return { data: result.dev, loadingData: false };
-        });
-      });
+  changeView(state) {
+    if (state) {
+      document.body.classList.add("no-scroll");
+      document.getElementsByClassName("dashboard")[0].style.opacity = 0.4;
+    } else {
+      document.body.classList.remove("no-scroll");
+      document.getElementsByClassName("dashboard")[0].style.opacity = 1;
+    }
   }
+  updateProgress() {
+    let p = this.state.progress.value;
+    if (this.state.data.length != 0) {
+      p =
+        p +
+        (this.state.data.pic !== null || this.state.data.pic !== "" ? 10 : 0);
+      p = p + (this.state.data.links.length > 0 ? 15 : 0);
+      p = p + (this.state.data.languages.length > 0 ? 15 : 0);
+      p = p + (this.state.data.frameworks.length > 0 ? 15 : 0);
+      p = p + (this.state.data.skills.length > 0 ? 15 : 0);
+      p = p + (this.state.data.work.length > 0 ? 15 : 0);
+    }
+    let variant = "danger";
+    if (p > 25 && p < 50) variant = "warning";
+    else if (p >= 50 && p < 75) variant = "info";
+    else if (p >= 75) variant = "success";
+    this.setState({
+      progress: { value: p, variant: variant }
+    });
+  }
+  componentDidMount() {
+    this.setState({ progress: { value: 15, variant: "danger" } });
+    if (this.state.dataChanged) {
+      this.updateSource(this.source);
+    }
+  }
+  componentWillMount() {
+    this.setState(ps => ({ loadingData: true }));
+    this.handleAuthentication();
 
-  handleClick() {
+    this.loadData();
+  }
+  loadData() {
+    if (this.state.uid) {
+      // let type = this.state.type === 0 ? "developers/" : "clients/";
+      fetch("http://localhost:5000/api/v1/developers/" + this.state.uid)
+        .then(res => res.json())
+        .then(result => {
+          console.log("componentDidMount: ", result);
+          this.updateSource(result.dev);
+          this.setState({ loadingData: false }, () => {
+            if (this.state.data) this.updateProgress();
+
+            this.changeView(this.state.hasDialog);
+          });
+        })
+        .catch(e => {
+          console.log("error: ", e);
+          this.setState(prev => {
+            return {
+              error: e.message,
+              loadingData: false,
+              isError: !prev.isError
+            };
+          });
+        });
+      this.setState({ dataChanged: false, proform: null });
+    }
+  }
+  showForm(id) {
+    if (this.state.buttonClicked) {
+      this.setState(
+        ps => ({
+          proform: id
+        }),
+        () => {
+          document.getElementById("proform").scrollIntoView();
+        }
+      );
+    } else {
+      this.setState(ps => ({
+        proform: null
+      }));
+    }
+  }
+  handleSubmitPro(data) {
+    console.log("submitpro: ", data);
+  }
+  handleButtonClick(e) {
+    if (!e || e === undefined) {
+      this.setState(
+        ps => ({
+          buttonClicked: false
+        }),
+        () => {
+          this.showForm(null);
+        }
+      );
+    } else {
+      let id = e.target.id;
+      this.setState(
+        ps => ({
+          buttonClicked: !ps.buttonClicked
+        }),
+        () => {
+          this.showForm(id);
+        }
+      );
+    }
+  }
+  handleLinkButton(e) {
+    this.setState({ hasDialog: true });
+  }
+  base64Encode(file) {
+    let reader = new FileReader();
+    reader.readAsDataURL(file);
+    return reader;
+  }
+  handleImageClick() {
     console.log("clicked image: " + this.state.data.pic);
     const imageUpload = document.getElementById("profileImageUpload");
     const uploadedImage = document.getElementById("profileImage");
@@ -81,119 +234,248 @@ class Dashboard extends React.Component {
     imageUpload.onchange = () => {
       let file = imageUpload.files[0];
       let imageUrl = file ? URL.createObjectURL(file) : uploadedImage.src;
+      let dataReader = this.base64Encode(file);
+      dataReader.onload = () => {
+        let data = { target: "pic", value: dataReader.result };
+        this.handleUpdate(data);
+      };
       uploadedImage.onload = () => {
         URL.revokeObjectURL(imageUrl);
       };
       uploadedImage.src = imageUrl;
     };
   }
+
   render() {
-    if (this.state.loadingData) {
-      return (
-        <div className="spinner">
-          <Spinner animation="grow" variant="success" />
-        </div>
-      );
-    } else {
-      if (!this.state.data.languages) {
+    if (this.state.authenticated) {
+      if (this.state.loadingData) {
         return (
           <div className="spinner">
-            <h1>Cannot retrieve any information</h1>
+            <Spinner animation="grow" variant="success" />
+          </div>
+        );
+      } else if (this.state.isError) {
+        return (
+          <div className="dashboard">
+            <div className="error">
+              <h2>{this.state.error}</h2>
+            </div>
+          </div>
+        );
+      } else if (this.state.data === undefined) {
+        return (
+          <div className="dashboard">
+            <div className="">
+              <h2>No data to show</h2>
+            </div>
           </div>
         );
       } else {
         return (
-          <div className="dashboard">
-            <div className="personal-details">
-              <div className="info">
-                <h1>User Profile</h1>
-                <input
-                  type="file"
-                  className="hidden"
-                  id="profileImageUpload"
-                  accept="image/*"
-                />
-                <img
-                  id="profileImage"
-                  className="profileImage"
-                  src={this.state.data.pic}
-                  alt={this.state.data.name}
-                  onClick={this.handleClick}
+          <div>
+            <div className="dashboard">
+              <div className="personal-details card">
+                <div className="control-horizontal mdl-color-text--primary">
+                  <i className="material-icons">edit</i>
+                </div>
+                <div className="info">
+                  <input
+                    type="file"
+                    className="hidden"
+                    id="profileImageUpload"
+                    accept="image/*"
+                  />
+                  <img
+                    id="profileImage"
+                    className="profileImage"
+                    src={this.state.data.pic}
+                    alt={this.state.data.name}
+                    onClick={this.handleImageClick}
+                  />
+                </div>
+                <div className="info left">
+                  <h3>{this.state.data.name} </h3>
+                  <h4>{this.state.data.profession} </h4>
+                  <b>{this.state.data.experience} &nbsp;year(s) experience</b>
+                  <p>{this.state.data.email} </p>
+                  {this.state.data.links.length > 0 ? (
+                    this.state.data.links.map(link => (
+                      <a key={link} href={link}>
+                        {link}
+                      </a>
+                    ))
+                  ) : (
+                    <button
+                      onClick={this.handleLinkButton}
+                      className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--primary"
+                    >
+                      <i className="material-icons">link</i>
+                      &nbsp;&nbsp;&nbsp;&nbsp;Add
+                    </button>
+                  )}
+                </div>
+              </div>
+              <div className="w-75">
+                <ProgressBar
+                  label={
+                    "Profile completion: " + this.state.progress.value + "%"
+                  }
+                  now={this.state.progress.value}
+                  variant={this.state.progress.variant}
                 />
               </div>
-              <div className="info left">
-                <p>{this.state.data.name} </p>
-                <p>{this.state.data.profession} </p>
-                <p>{this.state.data.email} </p>
-                {this.state.data.links.map(link => (
-                  <a key={link} href={link}>
-                    {link}
-                  </a>
-                ))}
+
+              {this.state.proform !== null ? (
+                <ProForm
+                  target={this.state.proform}
+                  uid={this.state.data.uid}
+                  data={this.state.data[this.state.proform]}
+                  onSubmit={data => this.handleSubmitPro(data)}
+                  onClose={e => this.handleButtonClick(e)}
+                  onUpdate={data => this.handleUpdate(data)}
+                />
+              ) : null}
+
+              <div className="professional-details">
+                {this.state.data.skills.length > 0 ? (
+                  <div className="pro-info card">
+                    <div className="card-title mdl-color-text--primary">
+                      <h4>Skills</h4>{" "}
+                      <div className="d-actions">
+                        <i
+                          id="skills"
+                          className="material-icons mdl-js-button mdl-js-ripple-effect mdl-button--accent"
+                          onClick={this.handleButtonClick}
+                        >
+                          add
+                        </i>
+                      </div>
+                    </div>
+
+                    <CustomList
+                      cssClass="card-list"
+                      items={this.state.data.skills}
+                      types="skills"
+                      editable={true}
+                    />
+                  </div>
+                ) : (
+                  <div className="pro-info card">
+                    <button
+                      id="skills"
+                      type="button"
+                      className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                      onClick={this.handleButtonClick}
+                    >
+                      Skills
+                    </button>
+                  </div>
+                )}
+                {this.state.data.languages.length > 0 ? (
+                  <div className="pro-info card">
+                    <div className="card-title mdl-color-text--primary">
+                      <h4>Languages</h4>
+                      <div className="d-actions">
+                        <i
+                          id="languages"
+                          className="material-icons mdl-js-button mdl-js-ripple-effect mdl-button--accent"
+                          onClick={this.handleButtonClick}
+                        >
+                          add
+                        </i>
+                      </div>
+                    </div>
+
+                    <CustomList
+                      cssClass="card-list"
+                      items={this.state.data.languages}
+                      types="languages"
+                      editable={true}
+                      onClick={this.showDialog}
+                    />
+                  </div>
+                ) : (
+                  <div className="pro-info card">
+                    <button
+                      id="languages"
+                      className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                      onClick={this.handleButtonClick}
+                    >
+                      Languages
+                    </button>
+                  </div>
+                )}
+                {this.state.data.frameworks.length > 0 ? (
+                  <div className="pro-info card">
+                    <div className="card-title mdl-color-text--primary">
+                      <h4>Frameworks</h4>
+                      <div className="d-actions">
+                        <i
+                          id="frameworks"
+                          className="material-icons mdl-js-button mdl-js-ripple-effect mdl-button--accent"
+                          onClick={this.handleButtonClick}
+                        >
+                          add
+                        </i>
+                      </div>
+                    </div>
+                    <CustomList
+                      cssClass="card-list"
+                      items={
+                        this.state.data.frameworks
+                          ? this.state.data.frameworks
+                          : []
+                      }
+                      types="frameworks"
+                      editable={true}
+                    />
+                  </div>
+                ) : (
+                  <div className="pro-info card">
+                    <button
+                      id="frameworks"
+                      className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                      onClick={this.handleButtonClick}
+                    >
+                      frameworks
+                    </button>
+                  </div>
+                )}
+                {this.state.data.work.length > 0 ? (
+                  <div className="pro-info card">
+                    <div className="card-title mdl-color-text--primary">
+                      <h4>Accomplished Work</h4>
+                      <div className="d-actions">
+                        <i
+                          id="work"
+                          className="material-icons mdl-js-button mdl-js-ripple-effect mdl-button--accent"
+                          onClick={this.handleButtonClick}
+                        >
+                          add
+                        </i>
+                      </div>
+                    </div>
+                    <CustomList
+                      cssClass="card-list"
+                      items={this.state.data.work}
+                      types="work"
+                      editable={true}
+                    />
+                  </div>
+                ) : (
+                  <div className="pro-info card ">
+                    <button
+                      id="work"
+                      className="mdl-button mdl-js-button mdl-js-ripple-effect mdl-button--raised mdl-button--accent"
+                      onClick={this.handleButtonClick}
+                    >
+                      Accomplished Work
+                    </button>
+                  </div>
+                )}
               </div>
-            </div>
 
-            <div className="professional-details">
-              {this.state.data.Skills ? (
-                <div className="pro-info card border-primary">
-                  <div className="card-title">
-                    <h3>Skills</h3>
-                  </div>
-
-                  <CustomList
-                    cssClass="card-list"
-                    items={this.state.data.Skills}
-                    types="skills"
-                    editable={true}
-                  />
-                </div>
-              ) : null}
-              {this.state.data.languages ? (
-                <div className="pro-info card border-primary">
-                  <div className="card-title">
-                    <h3>Languages</h3>
-                  </div>
-                  <CustomList
-                    cssClass="card-list"
-                    items={this.state.data.languages}
-                    types="languages"
-                    editable={true}
-                    onClick={this.showDialog}
-                  />
-                </div>
-              ) : null}
-              {this.state.data.frameworks ? (
-                <div className="pro-info card border-primary">
-                  <div className="card-title">
-                    <h3>Frameworks/Libraries</h3>
-                  </div>
-                  <CustomList
-                    cssClass="card-list"
-                    items={
-                      this.state.data.frameworks
-                        ? this.state.data.frameworks
-                        : []
-                    }
-                    types="frameworks"
-                    editable={true}
-                  />
-                </div>
-              ) : null}
-              {this.state.data.work ? (
-                <div className="pro-info card border-primary">
-                  <div className="card-title">
-                    <h3>Accomplished Work</h3>
-                  </div>
-                  <CustomList
-                    cssClass="card-list"
-                    items={this.state.data.work}
-                    types="work"
-                    editable={true}
-                  />
-                </div>
-              ) : null}
-            </div>
-            {this.state.dialog !== null ? (
+              {/* {this.state.dialog !== null ? (
               <AlertDialog
                 yesNo={true}
                 title={this.state.dialog.title}
@@ -201,10 +483,21 @@ class Dashboard extends React.Component {
                 unmount={this.hideDialog}
                 delete={this.delete}
               />
+            ) : null} */}
+            </div>
+            {this.state.hasDialog ? (
+              <LinkDialog
+                onUpdateLink={data => this.handleUpdate(data)}
+                data={this.state.data.links}
+              />
             ) : null}
           </div>
         );
       }
+    } else {
+      return (
+        <Redirect to={{ pathname: "/login", state: { isLoggedIn: false } }} />
+      );
     }
   }
 }

@@ -1,42 +1,37 @@
-import React, { Component } from 'react';
-import './App.css';
-import Router from './Router.js';
+import React, { Component } from "react";
+import "./App.css";
+import Main from "./Main.js";
+import CustomRouter from "./Router";
 
 class App extends Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.getLogin = this.getLogin.bind(this);
-    this.state = {isLoggedIn:false};
+    this.state = { isLoggedIn: false };
   }
 
-componentDidMount(){
-
-}
-getLogin(){
-  this.route = window.location.href.split('/');
-  console.log("current route: "+this.route[this.route.length-1]);
-  if(this.route[this.route.length-1] === "panel") {
-    this.setState((prevState)=>
-    {
-      return {isLoggedIn:!prevState.isLoggedIn};
-    });
+  componentDidMount() {
+    console.log("state: ", this.state);
   }
-  else{
-    this.setState((prevState)=>
-    {
-      return {isLoggedIn:prevState.isLoggedIn};
-    });
+  getLogin() {
+    this.route = window.location.href.split("/");
+    console.log("current route: " + this.route[this.route.length - 1]);
+    if (this.route[this.route.length - 1] === "panel") {
+      this.setState(prevState => {
+        return { isLoggedIn: !prevState.isLoggedIn };
+      });
+    } else {
+      this.setState(prevState => {
+        return { isLoggedIn: prevState.isLoggedIn };
+      });
+    }
+
+    console.log("login: " + this.getLogin());
   }
-
-  console.log("login: "+this.getLogin());
-
-}
   render() {
-
     return (
       <div className="App">
-        <Router login={this.state.isLoggedIn}/>
-
+        <CustomRouter login={this.state.isLoggedIn} />
       </div>
     );
   }

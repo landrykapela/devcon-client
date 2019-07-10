@@ -53,9 +53,8 @@ class CustomList extends React.Component {
     console.log("generating list..." + this.state.deleteClicked);
     if (this.types === "languages") {
       let list = [];
-
-      if (this.props.editable) {
-        for (let i = 0; i < this.items.length; i++) {
+      for (let i = 0; i < this.items.length; i++) {
+        if (this.props.editable) {
           let msg =
             "Are you sure you want to delete " + this.items[i].name + "?";
           let t = "Confirm Delete";
@@ -67,68 +66,49 @@ class CustomList extends React.Component {
             message: msg
           };
           list.push(
-            <div key={i}>
-              <img className="bullet" src={bullet} alt="bullet" />
-              <b>{this.items[i].name}</b>&nbsp;&nbsp;
-              <span className="actions">{this.items[i].level}</span>
-              &nbsp;&nbsp;&nbsp;
+            <li key={i}>
+              <b>{this.items[i].name}</b>
+              <span>{this.items[i].level}</span>
               <span className="actions">
-                <i
-                  id="delete"
-                  className="material-icons"
-                  onClick={() => this.handleDelete(lang2Del)}
-                >
-                  delete
-                </i>
+                <i className="material-icons mdl-color-text--primary">delete</i>
               </span>
-            </div>
+            </li>
           );
-        }
-      } else {
-        for (let i = 0; i < this.items.length; i++) {
+        } else {
           list.push(
-            <div key={i}>
-              <img className="bullet" src={bullet} alt="bullet" />
-              <b>{this.items[i].name}</b>&nbsp;&nbsp;
+            <li key={i}>
+              <b>{this.items[i].name}</b>
               <span className="actions">{this.items[i].level}</span>
-            </div>
+            </li>
           );
         }
       }
       this.myList = list;
     } else {
       if (this.types === "frameworks") {
-        let levels = [];
-        let frameworks = [];
-        if (this.items) {
-          this.items.map(item => {
-            levels.push(item.level);
-            frameworks.push(item.framework);
-          });
-        }
-
         let list = [];
         if (this.props.editable) {
-          for (let i = 0; i < levels.length; i++) {
+          for (let i = 0; i < this.items.length; i++) {
             list.push(
-              <div key={i}>
-                <img className="bullet" src={bullet} alt="bullet" />
-                <b>{frameworks[i]}</b>&nbsp;&nbsp;
-                <span className="actions">{levels[i]}</span>&nbsp;&nbsp;&nbsp;
+              <li key={this.items[i].name}>
+                <b>{this.items[i].name}</b>
+                <span>{this.items[i].level}</span>
+
                 <span className="actions">
-                  <i className="material-icons">delete</i>
+                  <i className="material-icons mdl-color-text--primary">
+                    delete
+                  </i>
                 </span>
-              </div>
+              </li>
             );
           }
         } else {
-          for (let i = 0; i < levels.length; i++) {
+          for (let i = 0; i < this.items.length; i++) {
             list.push(
-              <div key={i}>
-                <img className="bullet" src={bullet} alt="bullet" />
-                <b>{frameworks[i]}</b>&nbsp;&nbsp;
-                <span className="actions">{levels[i]}</span>
-              </div>
+              <li key={this.items[i].name}>
+                <b>{this.items[i].name}</b>
+                <span className="actions">{this.items[i].level}</span>
+              </li>
             );
           }
         }
@@ -138,27 +118,30 @@ class CustomList extends React.Component {
         if (this.props.editable) {
           for (let i = 0; i < this.items.length; i++) {
             list.push(
-              <div key={i}>
-                <img className="bullet" src={bullet} alt="bullet" />
+              <li key={this.items[i].name}>
+                <b>{this.items[i].name}</b>
                 <a
                   href={this.items[i].link}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {this.items[i].project}
+                  {this.items[i].link.length > 30
+                    ? this.items[i].link.substring(0, 29)
+                    : this.items[i].link}
                 </a>
-                &nbsp;&nbsp;&nbsp;
+
                 <span className="actions">
-                  <i className="material-icons">delete</i>
+                  <i className="material-icons mdl-color-text--primary">
+                    delete
+                  </i>
                 </span>
-              </div>
+              </li>
             );
           }
         } else {
           for (let i = 0; i < this.items.length; i++) {
             list.push(
-              <div key={i}>
-                <img className="bullet" src={bullet} alt="bullet" />
+              <li key={i}>
                 <a
                   href={this.items[i].link}
                   target="_blank"
@@ -166,7 +149,7 @@ class CustomList extends React.Component {
                 >
                   {this.items[i].project}
                 </a>
-              </div>
+              </li>
             );
           }
         }
@@ -178,13 +161,15 @@ class CustomList extends React.Component {
           if (this.items) {
             this.items.map(item => {
               list.push(
-                <div key={this.items.indexOf(item)}>
-                  <img className="bullet" src={bullet} alt="bullet" />
-                  {item}&nbsp;&nbsp;&nbsp;
+                <li key={item.name}>
+                  <b>{item.name}</b>
+                  <span>{item.level}</span>
                   <span className="actions">
-                    <i className="material-icons">delete</i>
+                    <i className="material-icons mdl-color-text--primary">
+                      delete
+                    </i>
                   </span>
-                </div>
+                </li>
               );
             });
           }
@@ -193,10 +178,9 @@ class CustomList extends React.Component {
             console.log("items: ", this.items);
             this.items.map(item => {
               list.push(
-                <div key={this.items.indexOf(item)}>
-                  <img className="bullet" src={bullet} alt="bullet" />
-                  {item}
-                </div>
+                <li key={this.items.name}>
+                  {item.name}&nbsp;&nbsp;&nbsp;<span>{item.level}</span>
+                </li>
               );
             });
           }
@@ -214,4 +198,5 @@ class CustomList extends React.Component {
     }
   }
 }
+
 export default CustomList;
