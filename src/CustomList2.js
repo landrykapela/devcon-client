@@ -4,19 +4,28 @@ import bullet from "./assets/bullet.gif";
 class CustomList extends React.Component {
   constructor(props) {
     super(props);
-    this.cssClass = props.cssClass;
-    this.items = props.items;
+
     this.types = props.types;
-    this.state = { deleteClicked: false, itemToDelete: null };
+    this.state = {
+      dataChanged: props.updated,
+      items: props.items,
+      deleteClicked: false,
+      itemToDelete: null
+    };
     this.myList = null;
     this.deleteMe = this.deleteMe.bind(this);
     this.generateList = this.generateList.bind(this);
     this.testDelete = this.testDelete.bind(this);
   }
+  shouldComponentUpdate(props) {
+    return this.state.dataChanged;
+  }
   componentDidMount() {
+    if (this.state.dataChanged) this.generateList();
+  }
+  componentWillMount() {
     this.generateList();
   }
-
   handleDelete(item) {
     this.setDeleteState(item);
     this.props.onClick(item);
@@ -53,10 +62,10 @@ class CustomList extends React.Component {
     console.log("generating list..." + this.state.deleteClicked);
     if (this.types === "languages") {
       let list = [];
-      for (let i = 0; i < this.items.length; i++) {
+      for (let i = 0; i < this.state.items.length; i++) {
         if (this.props.editable) {
           let msg =
-            "Are you sure you want to delete " + this.items[i].name + "?";
+            "Are you sure you want to delete " + this.state.items[i].name + "?";
           let t = "Confirm Delete";
           let lang2Del = {
             category: "professional",
@@ -67,8 +76,8 @@ class CustomList extends React.Component {
           };
           list.push(
             <li key={i}>
-              <b>{this.items[i].name}</b>
-              <span>{this.items[i].level}</span>
+              <b>{this.state.items[i].name}</b>
+              <span>{this.state.items[i].level}</span>
               <span className="actions">
                 <i className="material-icons mdl-color-text--primary">delete</i>
               </span>
@@ -77,8 +86,8 @@ class CustomList extends React.Component {
         } else {
           list.push(
             <li key={i}>
-              <b>{this.items[i].name}</b>
-              <span className="actions">{this.items[i].level}</span>
+              <b>{this.state.items[i].name}</b>
+              <span className="actions">{this.state.items[i].level}</span>
             </li>
           );
         }
@@ -88,11 +97,11 @@ class CustomList extends React.Component {
       if (this.types === "frameworks") {
         let list = [];
         if (this.props.editable) {
-          for (let i = 0; i < this.items.length; i++) {
+          for (let i = 0; i < this.state.items.length; i++) {
             list.push(
-              <li key={this.items[i].name}>
-                <b>{this.items[i].name}</b>
-                <span>{this.items[i].level}</span>
+              <li key={this.state.items[i].name}>
+                <b>{this.state.items[i].name}</b>
+                <span>{this.state.items[i].level}</span>
 
                 <span className="actions">
                   <i className="material-icons mdl-color-text--primary">
@@ -103,11 +112,11 @@ class CustomList extends React.Component {
             );
           }
         } else {
-          for (let i = 0; i < this.items.length; i++) {
+          for (let i = 0; i < this.state.items.length; i++) {
             list.push(
-              <li key={this.items[i].name}>
-                <b>{this.items[i].name}</b>
-                <span className="actions">{this.items[i].level}</span>
+              <li key={this.state.items[i].name}>
+                <b>{this.state.items[i].name}</b>
+                <span className="actions">{this.state.items[i].level}</span>
               </li>
             );
           }
@@ -116,18 +125,18 @@ class CustomList extends React.Component {
       } else if (this.types === "work") {
         let list = [];
         if (this.props.editable) {
-          for (let i = 0; i < this.items.length; i++) {
+          for (let i = 0; i < this.state.items.length; i++) {
             list.push(
-              <li key={this.items[i].name}>
-                <b>{this.items[i].name}</b>
+              <li key={this.state.items[i].name}>
+                <b>{this.state.items[i].name}</b>
                 <a
-                  href={this.items[i].link}
+                  href={this.state.items[i].link}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {this.items[i].link.length > 30
-                    ? this.items[i].link.substring(0, 29)
-                    : this.items[i].link}
+                  {this.state.items[i].link.length > 50
+                    ? this.state.items[i].link.substring(0, 49)
+                    : this.state.items[i].link}
                 </a>
 
                 <span className="actions">
@@ -139,15 +148,15 @@ class CustomList extends React.Component {
             );
           }
         } else {
-          for (let i = 0; i < this.items.length; i++) {
+          for (let i = 0; i < this.state.items.length; i++) {
             list.push(
               <li key={i}>
                 <a
-                  href={this.items[i].link}
+                  href={this.state.items[i].link}
                   target="_blank"
                   rel="noopener noreferrer"
                 >
-                  {this.items[i].project}
+                  {this.state.items[i].project}
                 </a>
               </li>
             );
@@ -158,8 +167,8 @@ class CustomList extends React.Component {
       } else {
         let list = [];
         if (this.props.editable) {
-          if (this.items) {
-            this.items.map(item => {
+          if (this.state.items) {
+            this.state.items.map(item => {
               list.push(
                 <li key={item.name}>
                   <b>{item.name}</b>
@@ -174,11 +183,11 @@ class CustomList extends React.Component {
             });
           }
         } else {
-          if (this.items) {
-            console.log("items: ", this.items);
-            this.items.map(item => {
+          if (this.state.items) {
+            console.log("items: ", this.state.items);
+            this.state.items.map(item => {
               list.push(
-                <li key={this.items.name}>
+                <li key={this.state.items.name}>
                   {item.name}&nbsp;&nbsp;&nbsp;<span>{item.level}</span>
                 </li>
               );
@@ -192,9 +201,13 @@ class CustomList extends React.Component {
   }
   render() {
     if (this.myList === null || this.myList.length < 1) {
-      return <p>No information provided</p>;
+      return (
+        <ul className="card-list">
+          <li>No information provided</li>
+        </ul>
+      );
     } else {
-      return <ul className={this.cssClass}>{this.myList}</ul>;
+      return <ul className="card-list">{this.myList}</ul>;
     }
   }
 }

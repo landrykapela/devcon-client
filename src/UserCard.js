@@ -1,26 +1,28 @@
-import React from 'react';
-
+import React from "react";
 
 class UserCard extends React.Component {
-  constructor(props){
+  constructor(props) {
     super(props);
     this.user = this.props.data;
   }
-  render(){
+  render() {
+    let { backgroundImage } = { backgroundImage: "url(" + this.user.pic + ")" };
+    return (
+      <div className="user-card mdl-color--white">
+        <div className="cardHead" style={{ backgroundImage }} />
 
-    let {backgroundImage} = {backgroundImage:"url(" + this.user.pic + ")"};
-    return(
-      <div className="user-card">
-        <div className="cardHead" style={{backgroundImage}}></div>
+        <h5>{this.user.name}</h5>
 
-        <h3>{this.user.name}</h3>
-
-      <a className="cardTitle" href={"/panel/" + this.user.id} >
-        <div>
-          <h4>{this.user.title}</h4>
-        </div>
-      </a>
+        <a
+          className="cardTitle mdl-color--primary mdl-color-text--white"
+          href={"/panel/" + this.user.uid}
+        >
+          <div>
+            <h6>{this.user.profession}</h6>
+          </div>
+        </a>
       </div>
     );
   }
-} export default UserCard;
+}
+export default UserCard;

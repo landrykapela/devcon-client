@@ -84,8 +84,8 @@ class CustomRouter extends React.Component {
     ];
     this.state = { isLoggedIn: false };
   }
-  handleAuth() {
-    this.setState(ps => ({ isLoggedIn: this.props.login }));
+  handleAuth(auth) {
+    this.setState(ps => ({ isLoggedIn: auth }));
   }
   hideSignup() {
     const signup = document.getElementById("signup");
@@ -98,7 +98,7 @@ class CustomRouter extends React.Component {
     signup.classList.remove("hidden");
   }
   componentDidMount() {
-    this.handleAuth();
+    this.handleAuth(this.state.isLoggedIn);
     console.log("Router: ", this.props.login);
   }
 
@@ -140,7 +140,7 @@ class CustomRouter extends React.Component {
               render={props => (
                 <FormLogin
                   {...props}
-                  target={this.state.isLoggedIn ? "out" : "in"}
+                  authenticated={false}
                   onAuthentication={this.handleAuth}
                 />
               )}
