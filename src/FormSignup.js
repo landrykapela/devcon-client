@@ -176,12 +176,12 @@ class FormSignup extends React.Component {
                 </a>
               </div>
             </form>
-            <div className="image-container">
+            {/* <div className="image-container">
               <div data-width="300" data-backgground>
                 <button id="my-signin2">Sign in with Google</button>
               </div>
-              {/* </div> */}
-            </div>
+             
+            </div> */}
           </div>
         </div>
       );

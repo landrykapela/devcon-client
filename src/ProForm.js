@@ -4,10 +4,47 @@ import { Spinner } from "react-bootstrap";
 class ProForm extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { data: props.data, loading: false };
+
+    this.state = {
+      data: props.data,
+      loading: false,
+      dataChanged: false,
+      source: []
+    };
     this.submit = this.submit.bind(this);
     this.update = this.update.bind(this);
     this.handleClick = this.handleClick.bind(this);
+  }
+  // filterSource(source) {
+  //   this.setState(ps => {
+  //     return {
+  //       filteredSource: this.state.source.filter(
+  //         value => !this.props.data.includes(value)
+  //       )
+  //     };
+  //   });
+  // }
+  componentWillMount() {}
+  componentDidMount() {
+    if (this.props.target !== "work") {
+      fetch("http://localhost:5000/api/v1/data/" + this.props.target, {
+        method: "get",
+        headers: { "content-type": "application/json" }
+      })
+        .then(res => res.json())
+        .then(result => {
+          console.log("skills: ", result.response);
+          let sorted = result.response.sort((d1, d2) => {
+            if (d1.name.toLowerCase() > d2.name.toLowerCase()) return 1;
+            if (d1.name.toLowerCase() < d2.name.toLowerCase()) return -1;
+            return 0;
+          });
+          this.setState({ source: sorted });
+        })
+        .catch(e => {
+          console.log(e);
+        });
+    }
   }
   handleClick() {
     this.props.onClose();
@@ -38,7 +75,7 @@ class ProForm extends React.Component {
       newData = [{ name: name, level: level }].concat(this.state.data);
     }
 
-    this.setState({ data: newData });
+    this.setState({ data: newData, dataChanged: true });
     e.target.reset();
   }
   render() {
@@ -60,19 +97,32 @@ class ProForm extends React.Component {
         </div>
         <form onSubmit={this.submit}>
           <input type="hidden" name="uid" value={this.props.uid} id="uid" />
-          <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
-            <input
-              className="mdl-textfield__input"
-              type="text"
-              id="name"
-              name="name"
-            />
-            <label className="mdl-textfield__label" htmlFor="name">
-              {this.props.target === "work"
-                ? "project name..."
-                : this.props.target + " name..."}
-            </label>
-          </div>
+          {this.props.target !== "work" ? (
+            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <select name="name" id="name" className="mdl-textfield__input ">
+                {this.state.source.map(skill => (
+                  <option className="cust-option" key={skill.id}>
+                    {skill.name}
+                  </option>
+                ))}
+              </select>
+            </div>
+          ) : (
+            <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
+              <input
+                className="mdl-textfield__input"
+                type="text"
+                id="name"
+                name="name"
+              />
+              <label className="mdl-textfield__label" htmlFor="name">
+                {this.props.target === "work"
+                  ? "project name..."
+                  : this.props.target + " name..."}
+              </label>
+            </div>
+          )}
+
           <div className="mdl-textfield mdl-js-textfield mdl-textfield--floating-label">
             <input
               className="mdl-textfield__input"
@@ -110,15 +160,16 @@ class ProForm extends React.Component {
           </ul>
           {this.state.loading ? (
             <Spinner variant="success" animation="grow" />
-          ) : (
+          ) : this.state.dataChanged ? (
             <button
+              id="save"
               onClick={this.update}
               type="button"
               className="mdl-button mdl-js-button mdl-button--raised mdl-button--primary"
             >
               save
             </button>
-          )}
+          ) : null}
         </div>
       </div>
     );

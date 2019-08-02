@@ -22,9 +22,8 @@ class FormLogin extends React.Component {
     };
   }
   componentDidMount() {
-    if (this.props.target === "out") {
-      this.setState({ isLoggedIn: false });
-    }
+    this.setState({ isLoggedIn: false });
+    this.handleAuth(this.state.isLoggedIn);
   }
   sendLogin(email, password) {
     return fetch("http://localhost:5000/api/v1/auth/login", {
@@ -47,12 +46,18 @@ class FormLogin extends React.Component {
           }));
         } else {
           const userinfo = response.userInfo;
-          this.setState(ps => ({
-            isLoggedIn: !ps.isLoggedIn,
-            uid: userinfo.uid,
-            type: userinfo.type,
-            redirectToReferrer: !ps.redirectToReferrer
-          }));
+          this.setState(
+            ps => ({
+              isLoggedIn: !ps.isLoggedIn,
+              uid: userinfo.uid,
+              type: userinfo.type,
+              redirectToReferrer: !ps.redirectToReferrer
+            }),
+            () => {
+              console.log("handleauth: ", this.state.isLoggedIn);
+              this.handleAuth(this.state.isLoggedIn);
+            }
+          );
         }
       });
   }
